@@ -22,7 +22,7 @@ def default_log_fn(epoch, total_loss, correct, losses):
         recent_time = curr_time
 
 
-    print("Epoch ", epoch, " loss ", total_loss, "correct", correct, "epoch time", int(epoch_time))
+    print("Epoch ", epoch, " loss ", total_loss, "correct", correct, "epoch time in ms", int(epoch_time) / 10)
 
 
 def RParam(*shape, backend):
