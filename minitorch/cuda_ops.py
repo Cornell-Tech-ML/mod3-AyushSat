@@ -388,10 +388,12 @@ def _mm_practice(out: Storage, a: Storage, b: Storage, size: int) -> None:
 
     cuda.syncthreads()
     if tx < size and ty < size:
-        temp = 0
+        temp = 0.0
         for k in range(size):
             temp += a_shared[tx, k] * b_shared[k, ty]
         out[tx, ty] = temp
+
+
 
 jit_mm_practice = jit(_mm_practice)
 
