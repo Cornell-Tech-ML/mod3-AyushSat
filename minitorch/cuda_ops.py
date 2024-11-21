@@ -354,7 +354,7 @@ def _mm_practice(out: Storage, a: Storage, b: Storage, size: int) -> None:
 
     Requirements:
 
-    * All data must be first moved to shared memory.
+    * All data must be first moved to shar ed memory.
     * Only read each cell in `a` and `b` once.
     * Only write to global memory once per kernel.
 
@@ -375,10 +375,23 @@ def _mm_practice(out: Storage, a: Storage, b: Storage, size: int) -> None:
         size (int): size of the square
 
     """
-    BLOCK_DIM = 32
-    # TODO: Implement for Task 3.3.
-    raise NotImplementedError("Need to implement for Task 3.3")
 
+    BLOCK_DIM = 32
+
+    a_shared = cuda.shared.array((BLOCK_DIM, BLOCK_DIM), numba.float64)
+    b_shared = cuda.shared.array((BLOCK_DIM, BLOCK_DIM), numba.float64)
+    tx, ty = cuda.threadIdx.x, cuda.threadIdx.y
+
+    if tx < size and ty < size:
+        a_shared[tx, ty] = a[tx * size + ty]
+        b_shared[tx, ty] = b[tx * size + ty]
+
+    cuda.syncthreads()
+    if tx < size and ty < size:
+        temp = 0
+        for k in range(size):
+            temp += a_shared[tx, k] * b_shared[k, ty]
+        out[tx, ty] = temp
 
 jit_mm_practice = jit(_mm_practice)
 
