@@ -468,6 +468,9 @@ def _tensor_matrix_multiply(
     # we need the entire row i of a_shared, split into blocks of BLOCK_DIM
     # we need the entire col j of b_shared, split into blocks of BLOCK_DIM
     temp = 0.0
+
+    # iterate over each block and accumulate dot product of those block's 
+    # local dot products
     for block_idx in range(0, K, BLOCK_DIM):
         # looking at an entire row of A across numerous blocks
         # we need to figure out which column we are looking at 
@@ -499,12 +502,14 @@ def _tensor_matrix_multiply(
         # sync here so all memory is loaded before proceeding
         cuda.syncthreads()
 
-        # dot product between the block's row and col
+        # dot product between the block's local row and col
         for k in range(BLOCK_DIM):
             temp += a_shared[pi, k] * b_shared[k, pj]
         
+        # sync before proceeding
         cuda.syncthreads()
     
+    #check bounds then write collected answer to output
     if i < out_shape[1] and j < out_shape[2]:
         out_batch_offset = out_strides[0] * batch
         out_row_offset = out_strides[1] * i
