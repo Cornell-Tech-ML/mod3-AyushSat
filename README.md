@@ -33,7 +33,7 @@ The files that will be synced are:
 
 ## Results:
 
-# Simple Dataset:
+# Simple
 
 Epoch  0  loss  6.599651012550327 correct 33
 Epoch  10  loss  1.3493981276006282 correct 49
@@ -86,7 +86,7 @@ Epoch  470  loss  0.0014421340382851382 correct 50
 Epoch  480  loss  0.3099639158301086 correct 50
 Epoch  490  loss  0.27879146904559826 correct 50
 
-# XOR
+# XOR 
 
 Epoch  0  loss  6.029907266101271 correct 32
 Epoch  10  loss  3.805369671643147 correct 42
@@ -192,3 +192,112 @@ Epoch  470  loss  0.018258225184855644 correct 49
 Epoch  480  loss  0.5662794818735126 correct 49
 Epoch  490  loss  0.13540191659533085 correct 49
 
+# Simple, GPU, 200 Hidden
+
+Average epoch time is 1.7 seconds
+
+Epoch  0  loss  3.0292057597021005 correct 44 epoch time 0
+Epoch  10  loss  1.4848428075165403 correct 49 epoch time 16333
+Epoch  20  loss  0.8390531886889816 correct 50 epoch time 17243
+Epoch  30  loss  0.6829435991494706 correct 46 epoch time 16400
+Epoch  40  loss  0.6014723641275683 correct 50 epoch time 16508
+Epoch  50  loss  0.34730356885735036 correct 50 epoch time 17022
+Epoch  60  loss  1.1501554530805826 correct 47 epoch time 17300
+Epoch  70  loss  1.9055815276609138 correct 47 epoch time 16574
+Epoch  80  loss  0.5897254230508595 correct 49 epoch time 16699
+Epoch  90  loss  0.11990890335490034 correct 50 epoch time 16361
+Epoch  100  loss  1.0505955309210466 correct 50 epoch time 16644
+Epoch  110  loss  0.00964031332472898 correct 50 epoch time 16791
+Epoch  120  loss  1.098940407699051 correct 48 epoch time 16297
+Epoch  130  loss  0.7687804182340212 correct 50 epoch time 16811
+Epoch  140  loss  0.2356150944700163 correct 49 epoch time 16602
+Epoch  150  loss  0.5095125655233959 correct 49 epoch time 16266
+Epoch  160  loss  1.1938771118261087 correct 47 epoch time 16953
+Epoch  170  loss  0.28936549391495947 correct 50 epoch time 16419
+Epoch  180  loss  1.385643796804681 correct 50 epoch time 16184
+Epoch  190  loss  0.12206196475744373 correct 49 epoch time 16677
+Epoch  200  loss  0.7815612227966542 correct 50 epoch time 16518
+Epoch  210  loss  0.95095977653832 correct 49 epoch time 16319
+Epoch  220  loss  0.38775515258915616 correct 50 epoch time 16972
+Epoch  230  loss  0.09300418455784504 correct 50 epoch time 16212
+Epoch  240  loss  0.08038361308286349 correct 49 epoch time 16154
+Epoch  250  loss  2.3439373568883655 correct 49 epoch time 16641
+Epoch  260  loss  0.5200546175875127 correct 50 epoch time 16488
+Epoch  270  loss  0.0725318124048017 correct 49 epoch time 17002
+Epoch  280  loss  0.5573067926504635 correct 50 epoch time 17031
+Epoch  290  loss  0.7235507955574988 correct 50 epoch time 16098
+Epoch  300  loss  0.008422843305884614 correct 50 epoch time 16193
+Epoch  310  loss  1.0142571978397903 correct 49 epoch time 17197
+Epoch  320  loss  0.6708632816012695 correct 50 epoch time 16206
+Epoch  330  loss  0.27269367427000163 correct 50 epoch time 16277
+Epoch  340  loss  0.013523719053183454 correct 49 epoch time 16874
+Epoch  350  loss  0.10312086739874277 correct 50 epoch time 16075
+Epoch  360  loss  0.6433835596252395 correct 50 epoch time 16210
+Epoch  370  loss  1.256113544060436 correct 48 epoch time 17074
+Epoch  380  loss  0.08170729035858972 correct 50 epoch time 16311
+Epoch  390  loss  0.8430831440523354 correct 50 epoch time 16323
+Epoch  400  loss  0.09347931131399678 correct 50 epoch time 17108
+Epoch  410  loss  0.2827291705159408 correct 50 epoch time 16185
+Epoch  420  loss  0.6520030402045595 correct 49 epoch time 16168
+Epoch  430  loss  0.16633175494937802 correct 50 epoch time 16912
+Epoch  440  loss  0.21706002894547877 correct 50 epoch time 16334
+Epoch  450  loss  0.018339329449635084 correct 50 epoch time 16312
+Epoch  460  loss  0.1328499263635285 correct 50 epoch time 17060
+Epoch  470  loss  0.00119190993476541 correct 49 epoch time 16233
+Epoch  480  loss  0.07381371492319487 correct 50 epoch time 17027
+Epoch  490  loss  0.6176695861777802 correct 50 epoch time 16871
+
+# Simple, CPU, 200 Hidden
+
+Average epoch time is 0.3 seconds
+
+Epoch  0  loss  4.049666987391138 correct 39 epoch time 0
+Epoch  10  loss  1.0451884989959181 correct 47 epoch time 3179
+Epoch  20  loss  1.3216714503459897 correct 49 epoch time 2016
+Epoch  30  loss  1.8807202237226905 correct 50 epoch time 2035
+Epoch  40  loss  1.8157734673041068 correct 47 epoch time 2019
+Epoch  50  loss  0.3043558749861071 correct 50 epoch time 2002
+Epoch  60  loss  2.031188895850809 correct 46 epoch time 2251
+Epoch  70  loss  0.5907293020281419 correct 49 epoch time 3000
+Epoch  80  loss  0.049860673959124156 correct 49 epoch time 2008
+Epoch  90  loss  0.12102202079014852 correct 50 epoch time 2008
+Epoch  100  loss  0.20635673056438206 correct 50 epoch time 2007
+Epoch  110  loss  0.05324660691335545 correct 49 epoch time 2015
+Epoch  120  loss  0.23211300432033244 correct 50 epoch time 2816
+Epoch  130  loss  0.07299149964420247 correct 50 epoch time 2352
+Epoch  140  loss  0.11245772148924452 correct 50 epoch time 2027
+Epoch  150  loss  1.1112544226464474 correct 49 epoch time 2024
+Epoch  160  loss  0.9440955490129295 correct 50 epoch time 2400
+Epoch  170  loss  0.01485057824931012 correct 50 epoch time 2106
+Epoch  180  loss  0.06054724790918051 correct 50 epoch time 3033
+Epoch  190  loss  0.25483457954031136 correct 50 epoch time 2041
+Epoch  200  loss  0.4370812644608729 correct 50 epoch time 2008
+Epoch  210  loss  0.5876674763163217 correct 49 epoch time 2033
+Epoch  220  loss  0.012922418256366803 correct 50 epoch time 2025
+Epoch  230  loss  0.35552684196526524 correct 50 epoch time 2801
+Epoch  240  loss  0.09783791182619168 correct 50 epoch time 2379
+Epoch  250  loss  0.003682417318961139 correct 50 epoch time 2032
+Epoch  260  loss  0.886004836091282 correct 49 epoch time 2070
+Epoch  270  loss  0.0969180008297372 correct 49 epoch time 2031
+Epoch  280  loss  1.1542812843084171 correct 49 epoch time 2017
+Epoch  290  loss  0.7391905254517088 correct 50 epoch time 3136
+Epoch  300  loss  0.03741208487313201 correct 50 epoch time 2026
+Epoch  310  loss  0.5060610838032757 correct 50 epoch time 2032
+Epoch  320  loss  0.06196417871051188 correct 49 epoch time 2024
+Epoch  330  loss  0.8392981886303184 correct 50 epoch time 2050
+Epoch  340  loss  0.03947695896812885 correct 49 epoch time 2490
+Epoch  350  loss  0.1448199793042615 correct 50 epoch time 2664
+Epoch  360  loss  0.8051441374010929 correct 50 epoch time 1996
+Epoch  370  loss  0.02800478698856881 correct 50 epoch time 2028
+Epoch  380  loss  0.8766179676026359 correct 50 epoch time 2061
+Epoch  390  loss  0.6083181877562931 correct 50 epoch time 2005
+Epoch  400  loss  0.055729698212180545 correct 50 epoch time 3129
+Epoch  410  loss  0.06467745423696304 correct 50 epoch time 2013
+Epoch  420  loss  0.0003025609634967026 correct 49 epoch time 2003
+Epoch  430  loss  0.19647429795522245 correct 50 epoch time 2048
+Epoch  440  loss  0.5280772160815217 correct 50 epoch time 2011
+Epoch  450  loss  0.7055925140568803 correct 50 epoch time 2105
+Epoch  460  loss  0.006892462275606784 correct 50 epoch time 3034
+Epoch  470  loss  0.01629442749540885 correct 50 epoch time 2002
+Epoch  480  loss  0.06413490228301402 correct 50 epoch time 2007
+Epoch  490  loss  0.3268477404680956 correct 50 epoch time 2024
