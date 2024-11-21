@@ -391,7 +391,7 @@ def _mm_practice(out: Storage, a: Storage, b: Storage, size: int) -> None:
         temp = 0.0
         for k in range(size):
             temp += a_shared[tx, k] * b_shared[k, ty]
-        out[tx, ty] = temp
+        out[tx * size + ty] = temp
 
 
 
