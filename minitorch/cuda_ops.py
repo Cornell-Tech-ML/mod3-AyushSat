@@ -19,7 +19,6 @@ from .tensor_data import (
     to_index,
 )
 from .tensor_ops import MapProto, TensorOps
-from operators import log
 
 FakeCUDAKernel = Any
 
