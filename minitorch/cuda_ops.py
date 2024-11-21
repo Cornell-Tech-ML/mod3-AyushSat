@@ -479,6 +479,7 @@ def _tensor_matrix_multiply(
             a_batch_offset = a_batch_stride * batch
             a_row_offset = a_strides[1] * i
             a_col_offset = a_strides[2] * col_idx_for_a
+            print(a_batch_offset, a_row_offset, a_col_offset)
             a_shared[pi, pj] = a_storage[a_batch_offset + a_row_offset + a_col_offset]
         else:
             # 0 to not disturb other calculation
@@ -491,6 +492,7 @@ def _tensor_matrix_multiply(
             b_batch_offset = b_batch_stride * batch
             b_row_offset = b_strides[1] * row_idx_for_b
             b_col_offset = b_strides[2] * j
+            print(b_batch_offset, b_row_offset, b_col_offset)
             b_shared[pi, pj] = b_storage[b_batch_offset + b_row_offset + b_col_offset]
         else:
             # 0 to not disturb other calculation
@@ -509,6 +511,7 @@ def _tensor_matrix_multiply(
         out_batch_offset = out_strides[0] * batch
         out_row_offset = out_strides[1] * i
         out_col_offset = out_strides[2] * j
+        print(out_batch_offset, out_row_offset, out_col_offset)
         out[out_batch_offset + out_row_offset + out_col_offset] = temp
     
 
