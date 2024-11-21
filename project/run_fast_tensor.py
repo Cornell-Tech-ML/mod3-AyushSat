@@ -1,7 +1,7 @@
 import random
 
 import numba
-from datetime import datetime
+import time
 
 import minitorch
 
@@ -13,12 +13,16 @@ if numba.cuda.is_available():
 recent_time = 0
 def default_log_fn(epoch, total_loss, correct, losses):
     epoch_time = 0
+    global recent_time
     if recent_time == 0:
-        recent_time = datetime.now()
+        recent_time = round(time.time() * 1000)
     else:
-        epoch_time = datetime.now() - epoch_time
+        curr_time = round(time.time() * 1000)
+        epoch_time = curr_time - recent_time
+        recent_time = curr_time
 
-    print("Epoch ", epoch, " loss ", total_loss, "correct", correct, "epoch time", epoch_time)
+
+    print("Epoch ", epoch, " loss ", total_loss, "correct", correct, "epoch time", int(epoch_time))
 
 
 def RParam(*shape, backend):
