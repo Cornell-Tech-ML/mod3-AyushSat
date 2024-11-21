@@ -451,17 +451,67 @@ def _tensor_matrix_multiply(
     i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x
     j = cuda.blockIdx.y * cuda.blockDim.y + cuda.threadIdx.y
 
+    K = a_shape[-1]
+
     # The local position in the block.
     pi = cuda.threadIdx.x
     pj = cuda.threadIdx.y
 
     # Code Plan:
     # 1) Move across shared dimension by block dim.
+    
     #    a) Copy into shared memory for a matrix.
     #    b) Copy into shared memory for b matrix
     #    c) Compute the dot produce for position c[i, j]
-    # TODO: Implement for Task 3.4.
-    raise NotImplementedError("Need to implement for Task 3.4")
 
+    # we are trying to solve for i, j
+    # we need the entire row i of a_shared, split into blocks of BLOCK_DIM
+    # we need the entire col j of b_shared, split into blocks of BLOCK_DIM
+    temp = 0.0
+    for block_idx in range(0, K, BLOCK_DIM):
+        # looking at an entire row of A across numerous blocks
+        # we need to figure out which column we are looking at 
+        # computable by taking the block we are at (block_idx) and adding our thread's column
+        col_idx_for_a = block_idx + pj
+        if col_idx_for_a < a_shape[2] and i < a_shape[1]:
+            # calculate the offsets to the storage based on the batch, row, col
+            # effectively a more specific index_to_position
+            a_batch_offset = a_batch_stride * batch
+            a_row_offset = a_strides[1] * i
+            a_col_offset = a_strides[2] * col_idx_for_a
+            a_shared[pi, pj] = a_storage[a_batch_offset + a_row_offset + a_col_offset]
+        else:
+            # 0 to not disturb other calculation
+            a_shared[pi, pj] = 0.0
+        
+        row_idx_for_b = block_idx + pi
+        if row_idx_for_b < b_shape[1] and j < b_shape[2]:
+            # calculate the offsets to the storage based on the batch, row, col
+            # effectively a more specific index_to_position
+            b_batch_offset = b_batch_stride * batch
+            b_row_offset = b_strides[1] * row_idx_for_b
+            b_col_offset = b_strides[2] * j
+            b_shared[pi, pj] = b_storage[b_batch_offset + b_row_offset + b_col_offset]
+        else:
+            # 0 to not disturb other calculation
+            b_shared[pi, pj] = 0.0
+        
+        # sync here so all memory is loaded before proceeding
+        cuda.syncthreads()
+
+        # dot product between the block's row and col
+        for k in range(BLOCK_DIM):
+            temp += a_shared[pi, pj] * b_shared[pi, pj]
+        
+        cuda.syncthreads()
+    
+    if i < out_shape[1] and j < out_shape[2]:
+        out_batch_offset = out_strides[0] * batch
+        out_row_offset = out_strides[1] * i
+        out_col_offset = out_strides[2] * j
+        out[out_batch_offset + out_row_offset + out_col_offset] = temp
+    
+
+    
 
 tensor_matrix_multiply = jit(_tensor_matrix_multiply)
