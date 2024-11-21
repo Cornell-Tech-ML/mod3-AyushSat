@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Callable, Optional, Type
-
+import numpy as np
 from typing_extensions import Protocol
 
 from . import operators
@@ -273,9 +273,9 @@ def tensor_map(
         in_strides: Strides,
     ) -> None:
         # create an array of zeros with o elements, where o is the number of dimensions in the output
-        output_index = [0] * len(out_shape)
+        output_index = np.zeros(len(out_shape), dtype=np.int32)
         # create an array of zeros with i elements, where i is the number of dimensions in the input
-        input_index = [0] * len(in_shape)
+        input_index = np.zeros(len(in_shape), dtype=np.int32)
         # loop through the entire output storage
         for i in range(len(out)):
             # figure out where the i'th element of the storage belongs in the output
@@ -331,10 +331,10 @@ def tensor_zip(
         b_strides: Strides,
     ) -> None:
         # create an array of zeros with o elements, where o is the number of dimensions in the output
-        output_index = [0] * len(out_shape)
+        output_index = np.zeros(len(out_shape), dtype=np.int32)
         # create an array of zeros with one element for each dimension for both A and B
-        a_index = [0] * len(a_shape)
-        b_index = [0] * len(b_shape)
+        a_index = np.zeros(len(a_shape), dtype=np.int32)
+        b_index = np.zeros(len(b_shape), dtype=np.int32)
         # loop through the entire output storage
         for i in range(len(out)):
             # figure out where the i'th element of the storage belongs in the output
@@ -379,7 +379,7 @@ def tensor_reduce(
         a_strides: Strides,
         reduce_dim: int,
     ) -> None:
-        output_index = [0] * len(out_shape)
+        output_index = np.zeros(len(out_shape), dtype=np.int32)
 
         for i in range(len(out)):
             to_index(i, out_shape, output_index)
