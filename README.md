@@ -33,6 +33,32 @@ The files that will be synced are:
 
 ## Results:
 
+3.4 Chart
+
+![alt text](image.png)
+
+Data:
+
+Size: 64
+    fast: 0.00299
+    gpu: 0.00542
+
+Size: 128
+    fast: 0.01558
+    gpu: 0.01250
+
+Size: 256
+    fast: 0.08616
+    gpu: 0.04011
+
+Size: 512
+    fast: 0.93477
+    gpu: 0.17083
+
+Size: 1024
+    fast: 7.54814
+    gpu: 0.79140"
+
 # Simple, GPU, Hidden 100
 
 
@@ -652,9 +678,6 @@ Epoch  480  loss  0.48944294557781054 correct 48 epoch time in ms 96.6
 Epoch  490  loss  0.8133583726713369 correct 50 epoch time in ms 94.8
 
 # Simple, GPU, 200 Hidden
-
-Average epoch time is 1.7 seconds
-
 
 Epoch  0  loss  3.0292057597021005 correct 44 epoch time 0
 
