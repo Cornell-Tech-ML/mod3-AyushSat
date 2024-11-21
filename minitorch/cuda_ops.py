@@ -384,16 +384,19 @@ def _mm_practice(out: Storage, a: Storage, b: Storage, size: int) -> None:
     """
     BLOCK_DIM = 32
 
+    # create the shared arrays to load a and b into
     a_shared = cuda.shared.array((BLOCK_DIM, BLOCK_DIM), numba.float64)
     b_shared = cuda.shared.array((BLOCK_DIM, BLOCK_DIM), numba.float64)
     tx, ty = cuda.threadIdx.x, cuda.threadIdx.y
 
+    # guard for threads outside the size, then pull in the tensors into shared memory
     if tx < size and ty < size:
         a_shared[tx, ty] = a[tx * size + ty]
         b_shared[tx, ty] = b[tx * size + ty]
-
+    # sync to ensure all memory read in
     cuda.syncthreads()
     if tx < size and ty < size:
+        # compute dot product and store
         temp = 0.0
         for k in range(size):
             temp += a_shared[tx, k] * b_shared[k, ty]
