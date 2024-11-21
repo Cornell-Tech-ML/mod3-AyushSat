@@ -5,8 +5,6 @@ from typing import Iterable, Optional, Sequence, Tuple, Union, List
 
 import numba
 import numba.cuda
-from numba import prange
-from numba import njit as _njit
 import numpy as np
 import numpy.typing as npt
 from numpy import array, float64
@@ -32,6 +30,7 @@ Strides: TypeAlias = npt.NDArray[np.int32]
 UserIndex: TypeAlias = Sequence[int]
 UserShape: TypeAlias = Sequence[int]
 UserStrides: TypeAlias = Sequence[int]
+
 
 def index_to_position(index: Index, strides: Strides) -> int:
     """Converts a multidimensional tensor `index` into a single-dimensional position in
@@ -66,7 +65,7 @@ def to_index(ordinal: int, shape: Shape, out_index: OutIndex) -> None:
         out_index : return index corresponding to position.
 
     """
-    # contiguous_strides = np.zeros(len(shape), dtype=np.float64) 
+    # contiguous_strides = np.zeros(len(shape), dtype=np.float64)
     # contiguous_strides[-1] = 1
     # for i in range(len(shape) - 1, 0, -1):
     #     contiguous_strides[i] = shape[i] * contiguous_strides[i + 1]
@@ -111,8 +110,6 @@ def broadcast_index(
         else:
             out_index[i] = 0
 
-def max_two(a,  b):
-    return a if a > b else b
 
 def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
     """Broadcast two shapes to create a new union shape.
@@ -154,7 +151,7 @@ def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
     # return tuple(res)
 
     a, b = shape1, shape2
-    m = max_two(len(a), len(b))
+    m = len(a) if len(a) > len(b) else len(b)
     c_rev = np.zeros(m, dtype=int)
     a_rev = a[::-1]
     b_rev = b[::-1]
@@ -170,7 +167,6 @@ def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
             if b_rev[i] != c_rev[i] and b_rev[i] != 1:
                 raise IndexingError(f"Broadcast failure {a} {b}")
     return tuple(c_rev[::-1])
-
 
 
 def strides_from_shape(shape: UserShape) -> UserStrides:

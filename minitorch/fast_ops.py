@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from typing import Callable, Optional
 
     from .tensor import Tensor
-    from .tensor_data import Index, Shape, Storage, Strides
+    from .tensor_data import Shape, Storage, Strides
 
 # TIP: Use `NUMBA_DISABLE_JIT=1 pytest tests/ -m task3_1` to run these tests without JIT.
 
@@ -30,6 +30,7 @@ Fn = TypeVar("Fn")
 
 
 def njit(fn: Fn, **kwargs: Any) -> Fn:
+    """Compiles the function with JIT an d returns it"""
     return _njit(inline="always", **kwargs)(fn)  # type: ignore
 
 
@@ -175,7 +176,6 @@ def tensor_map(
             broadcast_index(output_index, out_shape, in_shape, input_index)
             out[i] = fn(in_storage[index_to_position(input_index, in_strides)])
 
-
     return njit(_map, parallel=True)  # type: ignore
 
 
@@ -215,7 +215,7 @@ def tensor_zip(
     ) -> None:
         # loop through the entire output storage
         for i in prange(len(out)):
-             # create an array of zeros with o elements, where o is the number of dimensions in the output
+            # create an array of zeros with o elements, where o is the number of dimensions in the output
             output_index = np.zeros(MAX_DIMS, dtype=np.int32)
             # create an array of zeros with one element for each dimension for both A and B
             a_index = np.zeros(MAX_DIMS, dtype=np.int32)
@@ -278,9 +278,7 @@ def tensor_reduce(
                 temp_pos = 0
                 for x in range(len(a_strides)):
                     temp_pos += temp_inp_idx[x] * a_strides[x]
-                curr = fn(
-                    curr, a_storage[temp_pos]
-                )
+                curr = fn(curr, a_storage[temp_pos])
             out[i] = curr
 
     return njit(_reduce, parallel=True)  # type: ignore
@@ -331,7 +329,7 @@ def _tensor_matrix_multiply(
     """
     a_batch_stride = a_strides[0] if a_shape[0] > 1 else 0
     b_batch_stride = b_strides[0] if b_shape[0] > 1 else 0
-    #debugging
+    # debugging
     # print(f"Assuming a_batch_size({a_shape[0]}) == b_batch_size({b_shape[0]})")
     # print(f"Assuming a_shape[-1]({a_shape[-1]}) == b_shape[-2]({b_shape[-2]})")
     # print(f"Assuming a_shape[-2]({a_shape[-2]}) == out_shape[-2]({out_shape[-2]})")
@@ -342,10 +340,16 @@ def _tensor_matrix_multiply(
             for col in range(out_shape[-1]):
                 temp = 0.0
                 for i in range(a_shape[-1]):
-                    a_idx = batch * a_batch_stride + row * a_strides[1] + i * a_strides[2]
-                    b_idx = batch * b_batch_stride + i * b_strides[1] + col * b_strides[2]
+                    a_idx = (
+                        batch * a_batch_stride + row * a_strides[1] + i * a_strides[2]
+                    )
+                    b_idx = (
+                        batch * b_batch_stride + i * b_strides[1] + col * b_strides[2]
+                    )
                     temp += a_storage[a_idx] * b_storage[b_idx]
-                out_idx = out_strides[0] * batch + out_strides[1] * row + out_strides[2] * col
+                out_idx = (
+                    out_strides[0] * batch + out_strides[1] * row + out_strides[2] * col
+                )
                 out[out_idx] = temp
 
 
