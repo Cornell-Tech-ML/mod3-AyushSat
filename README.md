@@ -86,7 +86,7 @@ Epoch  470  loss  0.0014421340382851382 correct 50
 Epoch  480  loss  0.3099639158301086 correct 50
 Epoch  490  loss  0.27879146904559826 correct 50
 
-# XOR 
+# XOR
 
 Epoch  0  loss  6.029907266101271 correct 32
 Epoch  10  loss  3.805369671643147 correct 42
