@@ -255,20 +255,19 @@ def _sum_practice(out: Storage, a: Storage, size: int) -> None:
     pos = cuda.threadIdx.x
 
     if i < size:
-        cache[i] = a[i]
+        cache[pos] = a[i]
     else:
-        cache[i] = 0
+        cache[pos] = 0.0
     cuda.syncthreads()
-    if i < size:
-        offset = 1
-        for _ in range(6):
-            if pos % (offset * 2) == 0 and pos + offset < BLOCK_DIM:
-                cache[pos] = cache[pos] + cache[pos + offset]
-            offset = offset * 2
-            cuda.syncthreads()
-        
-        if pos == 0:
-            cache[cuda.blockDim.x] = cache[i]
+    offset = 1
+    while offset < BLOCK_DIM:
+        if pos % (2 * offset) == 0 and pos + offset < BLOCK_DIM:
+            cache[pos] = cache[pos] + cache[pos + offset]
+        offset *= 2
+        cuda.syncthreads()
+ 
+    if pos == 0:
+        out[cuda.blockIdx.x] = cache[0]
 
 
 jit_sum_practice = cuda.jit()(_sum_practice)
@@ -317,8 +316,30 @@ def tensor_reduce(
         out_index = cuda.local.array(MAX_DIMS, numba.int32)
         out_pos = cuda.blockIdx.x
         pos = cuda.threadIdx.x
-
+        #blocks used to compute every new value after reduce
+        #threads used to iterate over reduce dimension and perform reduction
         
+        if pos < a_shape[reduce_dim]:
+            #figure out which value in output were looking at
+            to_index(out_pos, out_shape, out_index)
+            #see where that index lands in a
+            relative_a_index = index_to_position(out_index, a_strides)
+            #what offset the thread puts us at compared to our relative index
+            thread_offset = a_strides[reduce_dim] * pos
+            #load into cache
+            cache[pos] = a_storage[relative_a_index + thread_offset]
+        else:
+            cache[pos] = reduce_value
+        cuda.syncthreads()
+        offset = 1
+        while offset < BLOCK_DIM:
+            if pos % (2 * offset) == 0 and pos + offset < BLOCK_DIM:
+                cache[pos] = fn(cache[pos], cache[pos + offset])
+            offset *= 2
+            cuda.syncthreads()
+    
+        if pos == 0:
+            out[out_pos] = cache[0]
 
     return jit(_reduce)  # type: ignore
 
