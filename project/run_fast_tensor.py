@@ -1,6 +1,7 @@
 import random
 
 import numba
+from datetime import datetime
 
 import minitorch
 
@@ -9,9 +10,15 @@ FastTensorBackend = minitorch.TensorBackend(minitorch.FastOps)
 if numba.cuda.is_available():
     GPUBackend = minitorch.TensorBackend(minitorch.CudaOps)
 
-
+recent_time = 0
 def default_log_fn(epoch, total_loss, correct, losses):
-    print("Epoch ", epoch, " loss ", total_loss, "correct", correct)
+    epoch_time = 0
+    if recent_time == 0:
+        recent_time = datetime.now()
+    else:
+        epoch_time = datetime.now() - epoch_time
+
+    print("Epoch ", epoch, " loss ", total_loss, "correct", correct, "epoch time", epoch_time)
 
 
 def RParam(*shape, backend):
