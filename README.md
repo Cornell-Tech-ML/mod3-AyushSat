@@ -35,7 +35,7 @@ The files that will be synced are:
 
 3.4 Chart
 
-![alt text](image.png)
+![alt text](image-1.png)
 
 Data:
 
